@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.henrydev.welcomehome.ui.home.HomeScreen
+import com.henrydev.welcomehome.ui.screen.PersonEntryBody
+import com.henrydev.welcomehome.ui.screen.PersonEntryScreen
 import com.henrydev.welcomehome.ui.theme.WelcomeHomeTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    PersonEntryScreen()
                 }
             }
         }
