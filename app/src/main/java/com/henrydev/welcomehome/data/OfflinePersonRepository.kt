@@ -1,0 +1,11 @@
+package com.henrydev.welcomehome.data
+
+import kotlinx.coroutines.flow.Flow
+
+class OfflinePersonRepository(private val personDao: PersonDao) : PersonsRepository {
+
+    override suspend fun insertPerson(person: Person) = personDao.insert(person)
+
+    override fun getAllStreamPerson(): Flow<List<Person>> = personDao.getAllPersons()
+
+}
