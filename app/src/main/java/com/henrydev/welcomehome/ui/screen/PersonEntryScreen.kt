@@ -23,12 +23,18 @@ import com.henrydev.welcomehome.PersonTopAppBar
 
 @Composable
 fun PersonEntryScreen(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PersonEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState: PersonUiState = viewModel.uiState
     Scaffold(
-        topBar = { PersonTopAppBar() },
+        topBar = {
+            PersonTopAppBar(
+                title = "Entry Person",
+                onNavigateBack = navigateBack,
+            )
+                 },
         modifier = modifier
     ) { innerPadding ->
         PersonEntryBody(

@@ -24,15 +24,21 @@ import com.henrydev.welcomehome.PersonTopAppBar
 
 @Composable
 fun HomeScreen(
+    navigateToEntryPerson: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
     val size = homeUiState.persons.size
     Scaffold(
-        topBar = { PersonTopAppBar() },
+        topBar = {
+            PersonTopAppBar(
+                title = "Home Welcome",
+                onNavigateBack = navigateBack
+            ) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {  }) {
+            FloatingActionButton(onClick = navigateToEntryPerson) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Add new person"
