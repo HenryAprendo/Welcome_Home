@@ -7,13 +7,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.henrydev.welcomehome.ui.home.HomeScreen
 import com.henrydev.welcomehome.ui.screen.PersonEntryScreen
 
 @Composable
 fun PersonApp(
     modifier: Modifier = Modifier
 ) {
-    PersonEntryScreen()
+    HomeScreen()
 }
 
 
