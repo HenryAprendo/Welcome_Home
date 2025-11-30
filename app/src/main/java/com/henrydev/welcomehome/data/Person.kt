@@ -22,14 +22,12 @@ data class Person(
     val rolId: Int
 )
 
-@Entity(tableName = "rol")
+@Entity(tableName = "roles")
 data class Rol(
     @PrimaryKey
     val rolId: Int,
     val name: String
 )
-
-//member o visitor
 
 data class RolWithPerson(
     @Embedded val rol: Rol,

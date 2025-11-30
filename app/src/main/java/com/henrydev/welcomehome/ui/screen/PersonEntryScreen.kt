@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.henrydev.welcomehome.AppViewModelProvider
+import com.henrydev.welcomehome.PersonTopAppBar
 
 @Composable
 fun PersonEntryScreen(
@@ -26,7 +27,10 @@ fun PersonEntryScreen(
     viewModel: PersonEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState: PersonUiState = viewModel.uiState
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = { PersonTopAppBar() },
+        modifier = modifier
+    ) { innerPadding ->
         PersonEntryBody(
             uiState = uiState,
             onPersonValueChange = { viewModel.updateUiState(it) },
@@ -50,8 +54,8 @@ fun PersonEntryBody(
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer)
+        modifier = modifier
+            .fillMaxSize()
     ) {
         PersonInputForm(
             personDetail = uiState.personDetail,

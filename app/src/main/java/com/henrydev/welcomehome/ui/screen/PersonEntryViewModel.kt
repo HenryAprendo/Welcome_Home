@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
+import com.henrydev.welcomehome.data.Person
 import com.henrydev.welcomehome.data.PersonsRepository
 
 class PersonEntryViewModel(
@@ -19,6 +20,9 @@ class PersonEntryViewModel(
         uiState = PersonUiState(personDetail)
     }
 
+    suspend fun insertPerson() {
+        //personsRepository.insertPerson()
+    }
 
 }
 
@@ -34,5 +38,17 @@ data class PersonDetail(
     //val createdAt: Long = System.currentTimeMillis(),
     //val rolId: Int
 )
+
+fun PersonDetail.toEntityPerson() = Person(
+    firstName = firstName,
+    lastName = lastName,
+    cellphone = cellphone.toIntOrNull() ?: 0,
+    residentialComplex = residentialComplex,
+    rolId = 1
+)
+
+
+
+
 
 
