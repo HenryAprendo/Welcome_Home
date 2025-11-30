@@ -16,7 +16,10 @@ object AppViewModelProvider {
         }
 
         initializer {
-            PersonEntryViewModel(personApplication().container.personsRepository)
+            PersonEntryViewModel(
+                personApplication().container.personsRepository,
+                personApplication().container.rolesRepository
+            )
         }
 
     }
