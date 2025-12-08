@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 import com.henrydev.welcomehome.data.Person
 import com.henrydev.welcomehome.data.PersonsRepository
 import com.henrydev.welcomehome.data.Rol
@@ -17,7 +15,7 @@ import kotlinx.coroutines.launch
 class PersonEntryViewModel(
     private val personsRepository: PersonsRepository,
     private val rolesRepository: RolesRepository
-): ViewModel() {
+) : ViewModel() {
 
     var uiState by mutableStateOf(PersonUiState())
         private set
@@ -37,24 +35,44 @@ class PersonEntryViewModel(
     }
 
     fun setRolId(rolId: Int) {
+        val updatePersonDetail = uiState.personDetail.copy(rolId = rolId)
         uiState = uiState.copy(
-            personDetail = uiState.personDetail.copy(rolId = rolId)
+            personDetail = updatePersonDetail,
+            isEntryValid = validate(updatePersonDetail)
         )
     }
 
     fun updateUiState(personDetail: PersonDetail) {
-        uiState = PersonUiState(personDetail)
+        uiState = uiState.copy(
+            personDetail = personDetail,
+            isEntryValid = validate(personDetail)
+        )
     }
 
     suspend fun insertPerson() {
-        //personsRepository.insertPerson()
+        if (validate()) {
+            val newPerson = uiState.personDetail.toEntityPerson()
+            personsRepository.insertPerson(newPerson)
+        }
+    }
+
+    private fun validate(personDetail: PersonDetail = uiState.personDetail): Boolean {
+        with(personDetail) {
+            return firstName.isNotBlank() &&
+                    lastName.isNotBlank() &&
+                    cellphone.isNotBlank() &&
+                    cellphone.toLongOrNull() != null &&
+                    residentialComplex.isNotBlank() &&
+                    rolId > 0
+        }
     }
 
 }
 
 data class PersonUiState(
     val personDetail: PersonDetail = PersonDetail(),
-    val rolesState: RolesUiState = RolesUiState()
+    val rolesState: RolesUiState = RolesUiState(),
+    val isEntryValid: Boolean = false
 )
 
 data class RolesUiState(
@@ -66,14 +84,14 @@ data class PersonDetail(
     val lastName: String = "",
     val cellphone: String = "",
     val residentialComplex: String = "",
-    //val createdAt: Long = System.currentTimeMillis(),
     val rolId: Int = 0
 )
 
 fun PersonDetail.toEntityPerson() = Person(
     firstName = firstName,
     lastName = lastName,
-    cellphone = cellphone.toIntOrNull() ?: 0,
+    cellphone = cellphone.toLong(),
     residentialComplex = residentialComplex,
-    rolId = this.rolId
+    rolId = rolId
 )
+

@@ -14,7 +14,7 @@ data class Person(
     val firstName: String,
     @ColumnInfo(name = "last_name")
     val lastName: String,
-    val cellphone: Int,
+    val cellphone: Long,
     @ColumnInfo(name = "residential_complex")
     val residentialComplex: String,
     @ColumnInfo(name = "created_at")
