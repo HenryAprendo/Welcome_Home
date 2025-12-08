@@ -32,18 +32,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.henrydev.welcomehome.AppViewModelProvider
 import com.henrydev.welcomehome.PersonTopAppBar
+import com.henrydev.welcomehome.R
 import com.henrydev.welcomehome.data.Rol
+import com.henrydev.welcomehome.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
+
+
+object PersonEntryDestination: NavigationDestination {
+    override val route: String = "person_entry"
+    override val titleRes: Int = R.string.entry_person
+}
 
 @Composable
 fun PersonEntryScreen(
     navigateBack: () -> Unit,
+    navigateToUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PersonEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -53,8 +63,8 @@ fun PersonEntryScreen(
     Scaffold(
         topBar = {
             PersonTopAppBar(
-                title = "Entry Person",
-                onNavigateBack = navigateBack,
+                title = PersonEntryDestination.titleRes,
+                onNavigateBack = navigateBack
             )
                  },
         modifier = modifier
@@ -64,13 +74,17 @@ fun PersonEntryScreen(
             onPersonValueChange = { viewModel.updateUiState(it) },
             onSetRolPerson = { rolId -> viewModel.setRolId(rolId) },
             onSaveClick = {
-                coroutineScope.launch { viewModel.insertPerson() }
+                coroutineScope.launch {
+                    viewModel.insertPerson()
+                    navigateToUp()
+                }
             },
-            modifier = Modifier.padding(
-                top = innerPadding.calculateTopPadding(),
-                start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
-                end = innerPadding.calculateEndPadding(LocalLayoutDirection.current)
-            )
+            modifier = Modifier
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
+                    end = innerPadding.calculateEndPadding(LocalLayoutDirection.current)
+                )
                 .padding(16.dp)
         )
     }

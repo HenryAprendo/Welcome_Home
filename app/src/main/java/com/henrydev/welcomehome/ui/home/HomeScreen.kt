@@ -21,6 +21,13 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.henrydev.welcomehome.AppViewModelProvider
 import com.henrydev.welcomehome.PersonTopAppBar
+import com.henrydev.welcomehome.R
+import com.henrydev.welcomehome.ui.navigation.NavigationDestination
+
+object HomeDestination: NavigationDestination {
+    override val route: String = "home"
+    override val titleRes: Int = R.string.home_welcome
+}
 
 @Composable
 fun HomeScreen(
@@ -34,8 +41,9 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             PersonTopAppBar(
-                title = "Home Welcome",
-                onNavigateBack = navigateBack
+                title = HomeDestination.titleRes,
+                onNavigateBack = navigateBack,
+                canNavigateBack = false
             ) },
         floatingActionButton = {
             FloatingActionButton(onClick = navigateToEntryPerson) {

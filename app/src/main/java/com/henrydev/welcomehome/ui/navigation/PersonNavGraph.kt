@@ -5,7 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.henrydev.welcomehome.ui.home.HomeDestination
 import com.henrydev.welcomehome.ui.home.HomeScreen
+import com.henrydev.welcomehome.ui.screen.PersonEntryDestination
 import com.henrydev.welcomehome.ui.screen.PersonEntryScreen
 
 @Composable
@@ -15,41 +17,27 @@ fun PersonNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = HomeDestination.route,
         modifier = modifier
     ) {
 
         composable(
-            route = "home"
+            route = HomeDestination.route
         ) {
             HomeScreen(
-                navigateToEntryPerson = { navController.navigate("entry_person") },
+                navigateToEntryPerson = { navController.navigate(PersonEntryDestination.route) },
                 navigateBack = { navController.navigateUp() }
             )
         }
 
         composable(
-            route = "entry_person"
+            route = PersonEntryDestination.route
         ) {
             PersonEntryScreen(
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.navigateUp() },
+                navigateToUp = { navController.popBackStack() }
             )
         }
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
