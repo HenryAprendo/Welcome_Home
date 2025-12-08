@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
-    private val personsRepository: PersonsRepository
+    personsRepository: PersonsRepository
 ): ViewModel() {
 
     val homeUiState: StateFlow<HomeUiState> =
@@ -19,9 +19,13 @@ class HomeViewModel(
             .map { HomeUiState(it) }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
+                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = TIME_OUT_MILLIS),
                 initialValue = HomeUiState()
             )
+
+    companion object {
+        const val TIME_OUT_MILLIS = 5_000L
+    }
 
 }
 
