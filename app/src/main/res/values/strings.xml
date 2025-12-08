@@ -2,4 +2,5 @@
     <string name="app_name">Welcome Home</string>
     <string name="entry_person">Entry person</string>
     <string name="home_welcome">Home Welcome</string>
+    <string name="details">Details</string>
 </resources>

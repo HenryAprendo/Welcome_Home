@@ -1,10 +1,13 @@
 package com.henrydev.welcomehome
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.henrydev.welcomehome.ui.home.HomeViewModel
+import com.henrydev.welcomehome.ui.screen.PersonDetailViewModel
 import com.henrydev.welcomehome.ui.screen.PersonEntryViewModel
 
 object AppViewModelProvider {
@@ -19,6 +22,13 @@ object AppViewModelProvider {
             PersonEntryViewModel(
                 personApplication().container.personsRepository,
                 personApplication().container.rolesRepository
+            )
+        }
+
+        initializer {
+            PersonDetailViewModel(
+                savedStateHandle = this.createSavedStateHandle(),
+                personApplication().container.personsRepository
             )
         }
 

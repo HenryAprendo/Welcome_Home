@@ -47,6 +47,7 @@ object HomeDestination: NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToEntryPerson: () -> Unit,
+    navigateToDetailScreen: (Person) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -72,6 +73,7 @@ fun HomeScreen(
 
         HomeBody(
             itemList = homeUiState.persons,
+            onItemClick = { navigateToDetailScreen(it) },
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding
         )
@@ -82,6 +84,7 @@ fun HomeScreen(
 @Composable
 fun HomeBody(
     itemList: List<Person>,
+    onItemClick: (Person) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -99,6 +102,7 @@ fun HomeBody(
         } else {
             PersonList(
                 itemList = itemList,
+                onItemClick = onItemClick,
                 contentPadding = contentPadding
             )
         }
@@ -108,6 +112,7 @@ fun HomeBody(
 @Composable
 fun PersonList(
     itemList: List<Person>,
+    onItemClick: (Person) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues
 ) {
@@ -117,7 +122,10 @@ fun PersonList(
         contentPadding = contentPadding,
     ) {
        items(items = itemList, key = { it.personId } ) { item ->
-           PersonItem( item)
+           PersonItem(
+               itemPerson = item,
+               onItemClick = onItemClick
+           )
        }
     }
 }
@@ -125,6 +133,7 @@ fun PersonList(
 @Composable
 fun PersonItem(
     itemPerson: Person,
+    onItemClick: (Person) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -134,6 +143,7 @@ fun PersonItem(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             contentColor = MaterialTheme.colorScheme.primary
         ),
+        onClick = { onItemClick(itemPerson) },
         modifier = modifier
     ) {
         Row(
