@@ -8,4 +8,6 @@ class OfflinePersonRepository(private val personDao: PersonDao) : PersonsReposit
 
     override fun getAllStreamPerson(): Flow<List<Person>> = personDao.getAllPersons()
 
+    override fun getPersonStream(id: Int): Flow<Person?> = personDao.getPerson(id)
+
 }

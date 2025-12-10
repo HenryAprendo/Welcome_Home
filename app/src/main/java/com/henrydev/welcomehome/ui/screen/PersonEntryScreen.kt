@@ -1,7 +1,5 @@
 package com.henrydev.welcomehome.ui.screen
 
-import android.inputmethodservice.Keyboard
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -63,7 +61,7 @@ fun PersonEntryScreen(
     Scaffold(
         topBar = {
             PersonTopAppBar(
-                title = PersonEntryDestination.titleRes,
+                title = stringResource(PersonEntryDestination.titleRes),
                 onNavigateBack = navigateBack
             )
                  },
@@ -220,13 +218,3 @@ fun PersonInputForm(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -3,4 +3,9 @@
     <string name="entry_person">Entry person</string>
     <string name="home_welcome">Home Welcome</string>
     <string name="details">Details</string>
+    <string name="label_name">Name</string>
+    <string name="label_last_name">Last name</string>
+    <string name="label_cellphone">Cellphone</string>
+    <string name="label_residential">Residential</string>
+    <string name="label_type">Type</string>
 </resources>

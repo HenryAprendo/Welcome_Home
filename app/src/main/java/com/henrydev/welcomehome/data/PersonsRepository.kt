@@ -8,4 +8,6 @@ interface PersonsRepository {
 
     fun getAllStreamPerson(): Flow<List<Person>>
 
+    fun getPersonStream(id:Int): Flow<Person?>
+
 }

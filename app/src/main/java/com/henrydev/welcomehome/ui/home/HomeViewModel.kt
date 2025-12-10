@@ -6,7 +6,6 @@ import com.henrydev.welcomehome.data.Person
 import com.henrydev.welcomehome.data.PersonsRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
