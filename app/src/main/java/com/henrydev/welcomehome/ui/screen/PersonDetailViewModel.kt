@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class PersonDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    personsRepository: PersonsRepository
+    private val personsRepository: PersonsRepository
 ): ViewModel() {
 
     val itemId: Int = checkNotNull(savedStateHandle[PersonDetailDestination.itemIdArg])
@@ -30,6 +30,10 @@ class PersonDetailViewModel(
         companion object {
             const val TIME_OUT_MILLIS = 5_000L
         }
+
+    suspend fun deletePerson() {
+        personsRepository.deletePerson(detailUiState.value.person)
+    }
 
 }
 

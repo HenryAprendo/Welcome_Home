@@ -57,7 +57,8 @@ fun PersonNavHost(
             )
         ) {
             PersonDetailScreen(
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.popBackStack() },
+                navigateUp = { navController.navigateUp()}
             )
         }
 

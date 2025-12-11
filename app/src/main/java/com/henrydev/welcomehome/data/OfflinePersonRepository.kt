@@ -6,6 +6,8 @@ class OfflinePersonRepository(private val personDao: PersonDao) : PersonsReposit
 
     override suspend fun insertPerson(person: Person) = personDao.insert(person)
 
+    override suspend fun deletePerson(person: Person) = personDao.delete(person)
+
     override fun getAllStreamPerson(): Flow<List<Person>> = personDao.getAllPersons()
 
     override fun getPersonStream(id: Int): Flow<Person?> = personDao.getPerson(id)
