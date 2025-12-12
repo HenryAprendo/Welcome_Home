@@ -51,7 +51,7 @@ object PersonEntryDestination: NavigationDestination {
 @Composable
 fun PersonEntryScreen(
     navigateBack: () -> Unit,
-    navigateToUp: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PersonEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -62,7 +62,7 @@ fun PersonEntryScreen(
         topBar = {
             PersonTopAppBar(
                 title = stringResource(PersonEntryDestination.titleRes),
-                onNavigateBack = navigateBack
+                onNavigateUp = navigateUp
             )
                  },
         modifier = modifier
@@ -74,7 +74,7 @@ fun PersonEntryScreen(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.insertPerson()
-                    navigateToUp()
+                    navigateBack()
                 }
             },
             modifier = Modifier

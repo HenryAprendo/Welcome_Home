@@ -53,7 +53,7 @@ fun HomeScreen(
         topBar = {
             PersonTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
-                onNavigateBack = navigateBack,
+                onNavigateUp = navigateBack,
                 canNavigateBack = false
             ) },
         floatingActionButton = {

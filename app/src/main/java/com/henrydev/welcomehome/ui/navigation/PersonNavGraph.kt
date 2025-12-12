@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.henrydev.welcomehome.ui.home.HomeDestination
 import com.henrydev.welcomehome.ui.home.HomeScreen
+import com.henrydev.welcomehome.ui.screen.EditPersonDestination
+import com.henrydev.welcomehome.ui.screen.EditPersonScreen
 import com.henrydev.welcomehome.ui.screen.PersonDetailDestination
 import com.henrydev.welcomehome.ui.screen.PersonDetailScreen
 import com.henrydev.welcomehome.ui.screen.PersonEntryDestination
@@ -43,8 +45,8 @@ fun PersonNavHost(
             route = PersonEntryDestination.route
         ) {
             PersonEntryScreen(
-                navigateBack = { navController.navigateUp() },
-                navigateToUp = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                navigateUp = { navController.navigateUp() }
             )
         }
 
@@ -58,13 +60,27 @@ fun PersonNavHost(
         ) {
             PersonDetailScreen(
                 navigateBack = { navController.popBackStack() },
-                navigateUp = { navController.navigateUp()}
+                navigateUp = { navController.navigateUp() },
+                navigateToEditScreen = { person ->
+                    navController.navigate(route = "${EditPersonDestination.route}/${person.personId}")
+                }
+            )
+        }
+
+        composable(
+            route = EditPersonDestination.routeWithArg,
+            arguments = listOf(
+                navArgument(name = EditPersonDestination.itemIdArg) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            EditPersonScreen(
+                navigateBack = { navController.popBackStack() },
+                navigateUp = { navController.navigateUp() }
             )
         }
 
     }
 }
-
-
-
 

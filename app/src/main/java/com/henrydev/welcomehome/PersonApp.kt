@@ -29,7 +29,7 @@ fun PersonApp(
 @Composable
 fun PersonTopAppBar(
     title: String,
-    onNavigateBack: () -> Unit,
+    onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -41,7 +41,7 @@ fun PersonTopAppBar(
         ) },
         navigationIcon = {
             if (canNavigateBack) {
-                IconButton(onClick = onNavigateBack) {
+                IconButton(onClick = onNavigateUp) {
                     Icon(
                         Icons.Default.ArrowBack,
                         "go to back"
@@ -59,9 +59,9 @@ fun PersonTopAppBar(
 @Composable
 fun EditPersonTopAppBar(
     title: String,
-    onNavigateBack: () -> Unit,
-    onDelete: () -> Unit = {},
-    onUpdate: () -> Unit = {},
+    onNavigateUp: () -> Unit,
+    onDelete: () -> Unit,
+    onNavigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
     canNavigateBack: Boolean = true,
 ) {
@@ -73,7 +73,7 @@ fun EditPersonTopAppBar(
         ) },
         navigationIcon = {
             if (canNavigateBack) {
-                IconButton(onClick = onNavigateBack) {
+                IconButton(onClick = onNavigateUp) {
                     Icon(
                         Icons.Default.ArrowBack,
                         "go to back"
@@ -88,7 +88,7 @@ fun EditPersonTopAppBar(
                     contentDescription = "delete person"
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { onNavigateToEdit() }) {
                 Icon(
                     imageVector = Icons.Filled.Edit,
                     contentDescription = "Edit person"

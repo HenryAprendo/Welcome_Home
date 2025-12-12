@@ -3,33 +3,55 @@ package com.henrydev.welcomehome.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.henrydev.welcomehome.data.Person
 import com.henrydev.welcomehome.data.PersonsRepository
-import com.henrydev.welcomehome.data.Rol
 import com.henrydev.welcomehome.data.RolesRepository
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class PersonEntryViewModel(
+
+class EditPersonViewModel(
+    saveStateHandle: SavedStateHandle,
     private val personsRepository: PersonsRepository,
     private val rolesRepository: RolesRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(PersonUiState())
+    val itemId: Int = checkNotNull(saveStateHandle[EditPersonDestination.itemIdArg])
+
+    var uiState: PersonUiState by mutableStateOf(PersonUiState())
         private set
 
     init {
-        loadRoles()
+        //loadRoles()
+        loadValues()
     }
 
     private fun loadRoles() {
         viewModelScope.launch {
             rolesRepository.getAllRolesStream()
                 .map { RolesUiState(it) }
-                .collect { rolesState ->
-                    uiState = uiState.copy(rolesState = rolesState)
+                .collect { rolesUiState ->
+                    uiState = uiState.copy(rolesState = rolesUiState)
+                }
+        }
+    }
+
+    private fun loadValues() {
+        viewModelScope.launch {
+            rolesRepository.getAllRolesStream()
+                .map { RolesUiState(it) }
+                .collect { rolesUiState ->
+                    uiState = personsRepository.getPersonStream(itemId)
+                        .filterNotNull()
+                        .first()
+                        .toPersonUiState(
+                            isEntryValid = true,
+                            rolesState = rolesUiState
+                        )
                 }
         }
     }
@@ -49,10 +71,10 @@ class PersonEntryViewModel(
         )
     }
 
-    suspend fun insertPerson() {
+    suspend fun updatePerson() {
         if (validate()) {
-            val newPerson = uiState.personDetail.toEntityPerson()
-            personsRepository.insertPerson(newPerson)
+            val editPerson = uiState.personDetail.toEntityPerson()
+            personsRepository.updatePerson(editPerson)
         }
     }
 
@@ -68,46 +90,3 @@ class PersonEntryViewModel(
     }
 
 }
-
-data class PersonUiState(
-    val personDetail: PersonDetail = PersonDetail(),
-    val rolesState: RolesUiState = RolesUiState(),
-    val isEntryValid: Boolean = false
-)
-
-data class RolesUiState(
-    val roles: List<Rol> = listOf()
-)
-
-data class PersonDetail(
-    val personId: Int = 0,
-    val firstName: String = "",
-    val lastName: String = "",
-    val cellphone: String = "",
-    val residentialComplex: String = "",
-    val rolId: Int = 0
-)
-
-fun PersonDetail.toEntityPerson() = Person(
-    personId = personId,
-    firstName = firstName,
-    lastName = lastName,
-    cellphone = cellphone.toLong(),
-    residentialComplex = residentialComplex,
-    rolId = rolId
-)
-
-fun Person.toPersonDetails() = PersonDetail(
-    personId = personId,
-    firstName = firstName,
-    lastName = lastName,
-    cellphone = cellphone.toString(),
-    residentialComplex = residentialComplex,
-    rolId = rolId
-)
-
-fun Person.toPersonUiState(isEntryValid: Boolean, rolesState: RolesUiState): PersonUiState = PersonUiState(
-    personDetail = this.toPersonDetails(),
-    rolesState = rolesState,
-    isEntryValid = isEntryValid
-)

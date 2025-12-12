@@ -54,19 +54,21 @@ object PersonDetailDestination: NavigationDestination {
 fun PersonDetailScreen(
     navigateUp: () -> Unit,
     navigateBack: () -> Unit,
+    navigateToEditScreen: (Person) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PersonDetailViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val detailUiState by viewModel.detailUiState.collectAsState()
+    val person = detailUiState.person
     var requestDeletePerson by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             EditPersonTopAppBar(
                 title = stringResource(PersonDetailDestination.titleRes),
-                onNavigateBack = navigateUp,
+                onNavigateUp = navigateUp,
                 onDelete = { requestDeletePerson = true },
-                onUpdate = { }
+                onNavigateToEdit = { navigateToEditScreen(person) }
             )
         },
         modifier = modifier
@@ -150,7 +152,7 @@ fun PersonDetailCard(
             HorizontalDivider()
             PersonDetailRow(
                 labelResId = R.string.label_type,
-                content = "member"
+                content = person.rolId.toString()
             )
         }
     }

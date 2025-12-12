@@ -8,4 +8,5 @@
     <string name="label_cellphone">Cellphone</string>
     <string name="label_residential">Residential</string>
     <string name="label_type">Type</string>
+    <string name="edit">Edit</string>
 </resources>

@@ -8,6 +8,8 @@ interface PersonsRepository {
 
     suspend fun deletePerson(person: Person)
 
+    suspend fun updatePerson(person: Person)
+
     fun getAllStreamPerson(): Flow<List<Person>>
 
     fun getPersonStream(id:Int): Flow<Person?>

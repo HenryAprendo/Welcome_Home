@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,6 +15,9 @@ interface PersonDao {
 
     @Delete
     suspend fun delete(person: Person)
+
+    @Update
+    suspend fun update(person: Person)
 
     @Query("SELECT * FROM persons ORDER BY first_name ASC")
     fun getAllPersons(): Flow<List<Person>>
