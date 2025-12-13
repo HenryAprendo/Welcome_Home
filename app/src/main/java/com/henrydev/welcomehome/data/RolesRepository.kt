@@ -8,4 +8,6 @@ interface RolesRepository {
 
     fun getAllRolesStream(): Flow<List<Rol>>
 
+    fun getRolStream(id:Int): Flow<Rol?>
+
 }

@@ -28,6 +28,7 @@ object AppViewModelProvider {
         initializer {
             PersonDetailViewModel(
                 savedStateHandle = this.createSavedStateHandle(),
+                personApplication().container.rolesRepository,
                 personApplication().container.personsRepository
             )
         }

@@ -15,4 +15,7 @@ interface RolDao {
     @Query("SELECT * FROM roles ORDER BY name ASC")
     fun getAllRoles(): Flow<List<Rol>>
 
+    @Query("SELECT * FROM roles WHERE rolId = :id")
+    fun getRol(id: Int): Flow<Rol?>
+
 }

@@ -10,4 +10,7 @@ class OfflineRolesRepository(private val rolDao: RolDao): RolesRepository {
     override fun getAllRolesStream(): Flow<List<Rol>> =
         rolDao.getAllRoles()
 
+    override fun getRolStream(id: Int): Flow<Rol?> =
+        rolDao.getRol(id)
+
 }

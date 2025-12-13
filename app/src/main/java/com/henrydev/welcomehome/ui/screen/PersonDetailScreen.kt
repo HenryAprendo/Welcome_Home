@@ -112,7 +112,8 @@ fun PersonDetailBody(
         modifier = modifier
     ) {
         PersonDetailCard(
-            person = uiState.person
+            person = uiState.person,
+            nameRole = uiState.role
         )
     }
 }
@@ -121,6 +122,7 @@ fun PersonDetailBody(
 @Composable
 fun PersonDetailCard(
     person: Person,
+    nameRole: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -152,7 +154,7 @@ fun PersonDetailCard(
             HorizontalDivider()
             PersonDetailRow(
                 labelResId = R.string.label_type,
-                content = person.rolId.toString()
+                content = nameRole
             )
         }
     }
