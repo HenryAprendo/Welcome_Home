@@ -9,4 +9,5 @@
     <string name="label_residential">Residential</string>
     <string name="label_type">Type</string>
     <string name="edit">Edit</string>
+    <string name="registration_date">Registration date</string>
 </resources>

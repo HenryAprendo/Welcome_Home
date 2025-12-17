@@ -62,6 +62,8 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.4")
     implementation("androidx.room:room-ktx:2.8.4")
 
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.7")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

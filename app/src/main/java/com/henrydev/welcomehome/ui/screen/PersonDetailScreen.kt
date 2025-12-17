@@ -1,6 +1,9 @@
 package com.henrydev.welcomehome.ui.screen
 
+import android.content.ClipData
+import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +13,15 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +36,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -42,6 +52,10 @@ import com.henrydev.welcomehome.R
 import com.henrydev.welcomehome.data.Person
 import com.henrydev.welcomehome.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 object PersonDetailDestination: NavigationDestination {
     override val route: String = "person_detail"
@@ -78,7 +92,8 @@ fun PersonDetailScreen(
 
         PersonDetailBody(
             uiState = detailUiState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
@@ -125,6 +140,10 @@ fun PersonDetailCard(
     nameRole: String,
     modifier: Modifier = Modifier
 ) {
+
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
     Card(
         elevation = CardDefaults.cardElevation(2.dp),
         modifier = modifier
@@ -142,10 +161,39 @@ fun PersonDetailCard(
                 content = person.lastName
             )
             HorizontalDivider()
-            PersonDetailRow(
-                labelResId = R.string.label_cellphone,
-                content = person.cellphone.toString()
-            )
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.label_cellphone),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = person.cellphone.toString(),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Icon(
+                    imageVector = Icons.Filled.ContentCopy,
+                    contentDescription = "Copy text",
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable {
+                            val clipData =
+                                ClipData.newPlainText("cellphone", person.cellphone.toString())
+                            val clipEntry = ClipEntry(clipData)
+                            clipboardManager.setClip(clipEntry)
+                            Toast.makeText(
+                                context,
+                                "Number copied to clipboard",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                )
+            }
             HorizontalDivider()
             PersonDetailRow(
                 labelResId = R.string.label_residential,
@@ -155,6 +203,11 @@ fun PersonDetailCard(
             PersonDetailRow(
                 labelResId = R.string.label_type,
                 content = nameRole
+            )
+            HorizontalDivider()
+            PersonDetailRow(
+                labelResId = R.string.registration_date,
+                content = formatReadableDate(person.createdAt)
             )
         }
     }
@@ -168,7 +221,8 @@ fun PersonDetailRow(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .padding(12.dp)
     ) {
         Text(
@@ -208,8 +262,16 @@ fun DeleteConfirmationDialog(
     )
 }
 
-
-
+private fun formatReadableDate(timestamp: Long): String {
+    return try {
+        val instant = Instant.ofEpochMilli(timestamp)
+        val zonedDateTime = instant.atZone(ZoneId.systemDefault())
+        val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
+        zonedDateTime.format(formatter)
+    } catch (e: Exception) {
+        "Invalid date"
+    }
+}
 
 
 
